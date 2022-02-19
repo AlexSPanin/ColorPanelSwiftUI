@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-    Text("Hello")
+    SliderColorView()
 }
 }
 struct ContentView_Previews: PreviewProvider {
