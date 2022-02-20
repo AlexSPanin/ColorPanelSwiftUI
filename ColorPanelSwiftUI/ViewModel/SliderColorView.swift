@@ -8,13 +8,17 @@
 import SwiftUI
 
 struct SliderColorView: View {
-    @FocusState var isInputActive: Bool
-    @State private var value = Double.random(in: 0...255)
+    
+    var colorText: Color
+    var colorTint: Color
+    
+    @Binding var value: Double
+    
+    @FocusState private var isInputActive: Bool
     @State private var valueInput = ""
     @State private var alertStatus = false
     
-    var colorText: Color = .red
-    var colorTint: Color = .red
+    
     
     var body: some View {
         
@@ -26,7 +30,6 @@ struct SliderColorView: View {
             Slider(value: $value, in: 0...255, step: 1)
                 .tint(colorTint)
                 .colorMultiply(colorTint)
-            
             TextField(dispayedValue(), text: $valueInput, onEditingChanged: { isBegin in
                 if !isBegin { checkSladerValue() }
             })
@@ -39,14 +42,16 @@ struct SliderColorView: View {
                     ToolbarItemGroup(placement: .keyboard) {
                         Spacer()
                         Button("Done") { checkSladerValue() }
-                            .alert("Wrong Format", isPresented: $alertStatus, actions: {}) {
-                                Text("Input Number 0 ... 255")
-                            }
+                        .alert("Wrong Format", isPresented: $alertStatus, actions: {}) {
+                            Text("Input Number 0 ... 255")
+                        }
                     }
                 })
-                .padding()
         }
+        
+        .padding()
     }
+
 
     private func dispayedValue() -> String {
         return String(format: "%0.0f", value)
@@ -66,8 +71,9 @@ struct SliderColorView: View {
     }
 }
 
-struct SliderColorView_Previews: PreviewProvider {
-    static var previews: some View {
-        SliderColorView(colorText: .red, colorTint: .red)
-    }
-}
+//struct SliderColorView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        
+//        SliderColorView(value: 100, colorText: .red, colorTint: .blue)
+//    }
+//}
