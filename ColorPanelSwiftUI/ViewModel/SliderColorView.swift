@@ -13,67 +13,61 @@ struct SliderColorView: View {
     var colorTint: Color
     
     @Binding var value: Double
+    @Binding var isEditingTextField: Bool
     
-    @FocusState private var isInputActive: Bool
+    @FocusState private var isActiveTextField: Bool
+    
     @State private var valueInput = ""
-    @State private var alertStatus = false
+    @State private var alertStatus: Bool = false
+    @State private var isEditingSlider: Bool = false
     
-    
+    private let setting = SettingUI()
     
     var body: some View {
         
         HStack {
-            Text(String(format: "%.0f",value))
-                .foregroundColor(colorText)
-                .frame(width: 50, height: 20, alignment:.trailing)
+            Spacer()
             
-            Slider(value: $value, in: 0...255, step: 1)
+            Text(String(format: "%.0f",value))
+                .foregroundColor(isEditingSlider ? .black : colorText)
+                .frame(width: setting.widthTextFrame, height: setting.heigthTextFrame, alignment:.trailing)
+            
+            Slider(value: $value, in: setting.range, step: 1, onEditingChanged: { editing in isEditingSlider = editing })
                 .tint(colorTint)
-                .colorMultiply(colorTint)
-            TextField(dispayedValue(), text: $valueInput, onEditingChanged: { isBegin in
-                if !isBegin { checkSladerValue() }
-            })
+            
+            TextField(dispayedValue(), text: $valueInput)
+                .focused($isActiveTextField)
+                .onChange(of: isActiveTextField) { newValue in
+                    if !newValue { checkSladerValue() }
+                }
+                .onChange(of: isEditingTextField) { newValue in checkSladerValue() }
+            
                 .textFieldStyle(.roundedBorder)
-                .frame(width: 50, height: 25, alignment: .center)
+                .frame(width: setting.widthTextField, height: setting.heigthTextField, alignment: .center)
                 .multilineTextAlignment(.center)
-                .focused($isInputActive)
-                .keyboardType(.asciiCapableNumberPad)
-                .toolbar(content: {
-                    ToolbarItemGroup(placement: .keyboard) {
-                        Spacer()
-                        Button("Done") { checkSladerValue() }
-                        .alert("Wrong Format", isPresented: $alertStatus, actions: {}) {
-                            Text("Input Number 0 ... 255")
-                        }
-                    }
-                })
+                .keyboardType(.numberPad)
+                .alert("Wrong Format", isPresented: $alertStatus, actions: {}) {
+                    Text("Input Number 0 ... 255")
+                }
+            Spacer()
         }
-        
-        .padding()
     }
-
-
+    
     private func dispayedValue() -> String {
         return String(format: "%0.0f", value)
     }
-     
+    
     private func checkSladerValue() {
-        if let value = Double(valueInput) {
-            if value >= 0 && value <= 255 {
-                self.value = value
-                isInputActive = false
-                valueInput = ""
-                return
+        if valueInput != "" {
+            if let value = Double(valueInput) {
+                if value >= setting.minValue && value <= setting.maxValue {
+                    self.value = value
+                    valueInput = ""
+                    return
+                }
             }
+            valueInput = ""
+            alertStatus.toggle()
         }
-        valueInput = ""
-        alertStatus.toggle()
     }
 }
-
-//struct SliderColorView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        
-//        SliderColorView(value: 100, colorText: .red, colorTint: .blue)
-//    }
-//}
