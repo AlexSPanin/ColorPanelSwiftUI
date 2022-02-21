@@ -38,9 +38,17 @@ struct SliderColorView: View {
             TextField(dispayedValue(), text: $valueInput)
                 .focused($isActiveTextField)
                 .onChange(of: isActiveTextField) { newValue in
-                    if !newValue { checkSladerValue() }
+                    if !newValue {
+                        withAnimation {
+                            checkSladerValue()
+                        }
+                    }
                 }
-                .onChange(of: isEditingTextField) { newValue in checkSladerValue() }
+                .onChange(of: isEditingTextField) { _ in
+                    withAnimation {
+                        checkSladerValue()
+                    }
+                }
             
                 .textFieldStyle(.roundedBorder)
                 .frame(width: setting.widthTextField, height: setting.heigthTextField, alignment: .center)
@@ -59,12 +67,10 @@ struct SliderColorView: View {
     
     private func checkSladerValue() {
         if valueInput != "" {
-            if let value = Double(valueInput) {
-                if value >= setting.minValue && value <= setting.maxValue {
-                    self.value = value
-                    valueInput = ""
-                    return
-                }
+            if let value = Double(valueInput), (setting.range).contains(value) {
+                self.value = value
+                valueInput = ""
+                return
             }
             valueInput = ""
             alertStatus.toggle()

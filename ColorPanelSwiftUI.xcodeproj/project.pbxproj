@@ -59,10 +59,9 @@
 		E24874F327C0CAA200FE10B4 /* ColorPanelSwiftUI */ = {
 			isa = PBXGroup;
 			children = (
-				E2492B3827C2253B00A27C84 /* Model */,
+				E2492B3827C2253B00A27C84 /* DataManadger */,
 				E2492B2D27C216A800A27C84 /* ContentView */,
 				E2492B2C27C2168800A27C84 /* View */,
-				E2492B2A27C215DC00A27C84 /* ViewModel */,
 				E2492B3627C222D000A27C84 /* Assets.xcassets */,
 				E24874FA27C0CAA300FE10B4 /* Preview Content */,
 			);
@@ -77,19 +76,12 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		E2492B2A27C215DC00A27C84 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				E248750227C0D0B800FE10B4 /* SliderColorView.swift */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
 		E2492B2C27C2168800A27C84 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				E2F9C84827C1283A005A3228 /* ColorPanelView.swift */,
 				E26C4A6427C10A99006B644C /* SlidersPanelView.swift */,
+				E248750227C0D0B800FE10B4 /* SliderColorView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -103,12 +95,12 @@
 			path = ContentView;
 			sourceTree = "<group>";
 		};
-		E2492B3827C2253B00A27C84 /* Model */ = {
+		E2492B3827C2253B00A27C84 /* DataManadger */ = {
 			isa = PBXGroup;
 			children = (
 				E2492B3927C2255300A27C84 /* SettingUI.swift */,
 			);
-			path = Model;
+			path = DataManadger;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
